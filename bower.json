@@ -1,0 +1,19 @@
+{
+  "name": "itunes",
+  "version": "0.0.0",
+  "authors": [
+    "oimou <s1190013@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.3"
+  }
+}
