@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "preinstall": "./node_modules/.bin/bower install"
+    "postinstall": "bower install"
   },
   "author": "",
   "license": "ISC",
