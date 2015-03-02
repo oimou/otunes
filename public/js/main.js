@@ -54,6 +54,22 @@ var showData = function(json) {
     html += '視聴する:<audio src="' + result.previewUrl + '" controls />';
     $('#displayArea').append(html);
   }
+
+  var ctx = new AudioContext();
+  var el = $("audio").eq(0)[0];
+  var source = ctx.createMediaElementSource(el);
+  var gainNode = ctx.createGain();
+
+  source.connect(gainNode);
+  gainNode.connect(ctx.destination);
+
+  var v = 0;
+  setInterval(function () {
+      v = v + 0.05;
+      gainNode.gain.value = 0.5 + Math.cos(v) / 2;
+  }, 100);
+
+  el.play();
 }
 
 $(function () {
