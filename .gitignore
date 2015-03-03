@@ -29,3 +29,13 @@ build/Release
 node_modules
 
 public/lib
+### https://raw.github.com/github/gitignore//Global/Vim.gitignore
+
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
+
+

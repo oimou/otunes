@@ -45,37 +45,102 @@ var search = function(options) {
   iTunes APIから取得したデータをテーブルに表示する
 */
 var showData = function(json) {
+  var content = document.getElementById("template-card").import;
+  var template = content.querySelector("template");
+  var audioCtx = new AudioContext();
+
   // UIへ表示する
   // デザインは適当ですが、こんな感じで表示できます。
-  for (var i = 0, len = json.results.length; i < len; i++) {
-    var result = json.results[i];
-    var html = 'title:' + result.trackName;
-    html += 'artist:' + result.artistName;
-    html += '視聴する:<audio src="' + result.previewUrl + '" controls />';
-    $('#displayArea').append(html);
-  }
+  json.results.forEach(function (res) {
+    var el = document.importNode(template.content, true);
 
-  var ctx = new AudioContext();
-  var el = $("audio").eq(0)[0];
-  var source = ctx.createMediaElementSource(el);
-  var gainNode = ctx.createGain();
+    $(el).find(".card-title").text(res.trackName);
+    $(el).find(".card-artist").text(res.artistName);
+    $(el).find(".card-audio").attr("src", res.previewUrl);
 
-  source.connect(gainNode);
-  gainNode.connect(ctx.destination);
+    var audio = $(el).find(".card-audio")[0];
+    var source = audioCtx.createMediaElementSource(audio);
+    var analyser = audioCtx.createAnalyser();
 
-  var v = 0;
-  setInterval(function () {
-      v = v + 0.05;
-      gainNode.gain.value = 0.5 + Math.cos(v) / 2;
-  }, 100);
+    source.connect(analyser);
+    //analyser.connect(audioCtx.destination);
 
-  el.play();
+    analyser.fftSize = 2048;
+    var bufferLength = analyser.frequencyBinCount;
+    var dataArray = new Uint8Array(bufferLength);
+
+    var width = 400;
+    var height = 200;
+    var canvas = $(el).find(".card-canvas")[0];
+    var ctx = canvas.getContext("2d");
+
+    $(canvas).attr({
+      width: width,
+      height: height
+    });
+
+    ctx.clearRect(0, 0, width, height);
+
+    $(el).find(".card").on("click", function () {
+      if (audio.paused) {
+        audio.play();
+        analyser.connect(audioCtx.destination);
+      } else {
+        audio.pause();
+        analyser.disconnect();
+      }
+    });
+
+    $(el).appendTo("#displayArea");
+
+    var scale = chroma.scale('RdYlBu').domain([0, 1]);
+    var bgColor = scale(Math.random()).css();
+    var waveColor;
+
+    if (chroma.luminance(bgColor) > 0.5) {
+      waveColor = "rgb(30, 30, 30)";
+    } else {
+      waveColor = "rgb(200, 200, 200)";
+    }
+
+    function draw() {
+      analyser.getByteTimeDomainData(dataArray);
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.lineWidth = 0.5;
+      ctx.strokeStyle = waveColor;
+      ctx.beginPath();
+
+      var sliceWidth = width * 1.0 / bufferLength;
+      var x = 0;
+
+      for (var i = 0; i < bufferLength; i++) {
+        var v = dataArray[i] / 128.0;
+        var y = v * height / 2;
+
+        if (i === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+
+        x += sliceWidth;
+      }
+
+      ctx.lineTo(width, height / 2);
+      ctx.stroke();
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  });
 }
 
 $(function () {
-    // 検索する
     search({
       term: 'きゃりーぱみゅぱみゅ',
-      limit: 30
+      limit: 12
     });
 });
