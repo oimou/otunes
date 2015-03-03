@@ -5,6 +5,7 @@ html {
 }
 
 body {
+    box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
     height: 100%;
     background-color: #111133;
@@ -22,6 +23,13 @@ body {
                       -o-linear-gradient(-135deg, #111111 25%, #111111 25%, transparent 25%, transparent 75%, #111111 75%, #111111 75%);
     background-image: linear-gradient(45deg,  #111111 25%, #111111 25%, transparent 25%, transparent 75%, #111111 75%, #111111 75%),
                       linear-gradient(-135deg, #111111 25%, #111111 25%, transparent 25%, transparent 75%, #111111 75%, #111111 75%);
+}
+
+.footer {
+    box-sizing: border-box;
+    margin: 8px;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.3);
 }
 
 h1 {
@@ -57,7 +65,9 @@ h1 {
 }
 
 .display-area {
-    margin-top: 100px;
+    box-sizing: border-box;
+    min-height: 100%;
+    padding-top: 100px;
     text-align: center;
 }
 
