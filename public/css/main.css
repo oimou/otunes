@@ -1,31 +1,85 @@
 @charset "utf-8";
 
+html {
+    height: 100%;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    height: 100%;
+    background-color: #111133;
+    -webkit-background-size: 5px 5px;
+    -moz-background-size: 5px 5px;
+    background-size: 5px 5px;
+    background-position: 0 0, 2.5px 2.5px;
+    background-image: -webkit-linear-gradient(45deg,  #111111 25%, #111111 25%, transparent 25%, transparent 75%, #111111 75%, #111111 75%),
+                      -webkit-linear-gradient(-135deg, #111111 25%, #111111 25%, transparent 25%, transparent 75%, #111111 75%, #111111 75%);
+    background-image: -moz-linear-gradient(45deg,  #111111 25%, #111111 25%, transparent 25%, transparent 75%, #111111 75%, #111111 75%),
+                      -moz-linear-gradient(-135deg, #111111 25%, #111111 25%, transparent 25%, transparent 75%, #111111 75%, #111111 75%);
+    background-image: -ms-linear-gradient(45deg,  #111111 25%, #111111 25%, transparent 25%, transparent 75%, #111111 75%, #111111 75%),
+                      -ms-linear-gradient(-135deg, #111111 25%, #111111 25%, transparent 25%, transparent 75%, #111111 75%, #111111 75%);
+    background-image: -o-linear-gradient(45deg,  #111111 25%, #111111 25%, transparent 25%, transparent 75%, #111111 75%, #111111 75%),
+                      -o-linear-gradient(-135deg, #111111 25%, #111111 25%, transparent 25%, transparent 75%, #111111 75%, #111111 75%);
+    background-image: linear-gradient(45deg,  #111111 25%, #111111 25%, transparent 25%, transparent 75%, #111111 75%, #111111 75%),
+                      linear-gradient(-135deg, #111111 25%, #111111 25%, transparent 25%, transparent 75%, #111111 75%, #111111 75%);
+}
+
 h1 {
     margin: 16px 8px;
     padding: 0px;
 }
 
+.search {
+    margin: auto;
+    width: 300px;
+    max-width: 90%;
+    position: absolute;
+    top: 45%;
+    left: 0;
+    right: 0;
+    transition: .5s ease top;
+}
+
+.search.is-ready {
+    top: 16px;
+}
+
+.search-query {
+    box-sizing: border-box;
+    background: none;
+    border: 1px solid white;
+    outline: none;
+    padding: 16px;
+    color: white;
+    box-shadow: none;
+    border-radius: 0;
+    width: 100%;
+}
+
+.display-area {
+    margin-top: 100px;
+    text-align: center;
+}
+
 .card {
-    margin: 8px;
+    margin: 4px;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.16), 0 0 1px 0 rgba(0, 0, 0, 0.16);
-    width: 400px;
-    height: 200px;
+    width: 300px;
+    height: 300px;
     position: relative;
     display: inline-block;
     cursor: pointer;
 }
 
 .card-title {
+    font-size: 18px;
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 16px;
+    right: 16px;
     margin: auto;
-    text-align: center;
+    text-align: right;
     width: 80%;
-    height: 2em;
-    line-height: 2em;
+    line-height: 1.4;
     color: white;
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.46), 0 0 1px rgba(0, 0, 0, 0.46);
 }

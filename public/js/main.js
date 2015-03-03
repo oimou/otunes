@@ -31,7 +31,9 @@ var search = function(options) {
 
     // 処理が成功したら、jsonが返却されます
     success: function(json) {
-      showData(json, options);
+      setTimeout(function () {
+        showData(json, options);
+      }, 500);
     },
 
     error: function() {
@@ -40,14 +42,15 @@ var search = function(options) {
   });
 };
 
+var content = document.getElementById("template-card").import;
+var template = content.querySelector("template");
+var audioCtx = new webkitAudioContext();
 
 /**
   iTunes APIから取得したデータをテーブルに表示する
 */
 var showData = function(json) {
-  var content = document.getElementById("template-card").import;
-  var template = content.querySelector("template");
-  var audioCtx = new AudioContext();
+  $("#displayArea").empty();
 
   // UIへ表示する
   // デザインは適当ですが、こんな感じで表示できます。
@@ -69,8 +72,8 @@ var showData = function(json) {
     var bufferLength = analyser.frequencyBinCount;
     var dataArray = new Uint8Array(bufferLength);
 
-    var width = 400;
-    var height = 200;
+    var width = 300;
+    var height = 300;
     var canvas = $(el).find(".card-canvas")[0];
     var ctx = canvas.getContext("2d");
 
@@ -97,7 +100,7 @@ var showData = function(json) {
     var bgColor = scale(Math.random()).css();
     var waveColor;
 
-    if (chroma.luminance(bgColor) > 0.5) {
+    if (chroma.luminance(bgColor) > 0.4) {
       waveColor = "rgb(30, 30, 30)";
     } else {
       waveColor = "rgb(200, 200, 200)";
@@ -114,10 +117,11 @@ var showData = function(json) {
 
       var sliceWidth = width * 1.0 / bufferLength;
       var x = 0;
+      //var curr = ~~(bufferLength * (audio.currentTime / audio.duration));
 
       for (var i = 0; i < bufferLength; i++) {
         var v = dataArray[i] / 128.0;
-        var y = v * height / 2;
+        var y = v * height / 4 + height / 4 + Math.random() * 2 - 1;
 
         if (i === 0) {
           ctx.moveTo(x, y);
@@ -128,6 +132,7 @@ var showData = function(json) {
         x += sliceWidth;
       }
 
+      ctx.lineTo(x, height / 2);
       ctx.lineTo(width, height / 2);
       ctx.stroke();
 
@@ -139,8 +144,16 @@ var showData = function(json) {
 }
 
 $(function () {
-    search({
-      term: 'きゃりーぱみゅぱみゅ',
-      limit: 12
+    $("#search").on("submit", function (e) {
+      e.preventDefault();
+
+      $(this).addClass("is-ready");
+
+      var query = $("#query").val();
+
+      search({
+        term: query,
+        limit: 12
+      });
     });
 });
